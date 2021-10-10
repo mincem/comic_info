@@ -4,7 +4,7 @@ from xml.etree import cElementTree as elementTree
 
 
 def write_xml(xml_element, directory_path):
-    file_path = os.path.join(directory_path, "../../ComicInfo.xml")
+    file_path = os.path.join(directory_path, "ComicInfo.xml")
     print(f"Saving to {file_path}")
     parsed_xml = minidom.parseString(elementTree.tostring(xml_element, encoding="utf-8"))
     pretty_xml = parsed_xml.toprettyxml(indent="  ", encoding="utf-8")
