@@ -3,6 +3,11 @@ import os
 from .comic import Comic
 from .comic_info_writer import ComicInfoWriter
 from .zip_writer import ZipWriter
+from .command_line_zip_writer import CommandLineZipWriter
+
+
+def running_on_windows():
+    return os.name == 'nt'
 
 
 class Command:
@@ -28,4 +33,11 @@ class Command:
         file_path = os.path.join(self.starting_dir, file_name)
         print(f"File path: {file_path}")
         comic_info_file_path = ComicInfoWriter(comic, self.starting_dir).write()
-        ZipWriter(file_path).add(comic_info_file_path)
+        self.add_file_to_zip(file_path, comic_info_file_path)
+
+    @staticmethod
+    def add_file_to_zip(zip_file_path, comic_info_file_path):
+        if running_on_windows():
+            CommandLineZipWriter(zip_file_path).add(comic_info_file_path)
+        else:
+            ZipWriter(zip_file_path).add(comic_info_file_path)
