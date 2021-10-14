@@ -34,6 +34,7 @@ class Command:
         print(f"File path: {file_path}")
         comic_info_file_path = ComicInfoWriter(comic, self.starting_dir).write()
         self.add_file_to_zip(file_path, comic_info_file_path)
+        os.remove(comic_info_file_path)
 
     @staticmethod
     def add_file_to_zip(zip_file_path, comic_info_file_path):
