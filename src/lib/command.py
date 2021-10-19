@@ -15,7 +15,10 @@ class Command:
         self.starting_dir = starting_dir
 
     def execute(self):
-        _start_dir, directories, file_names = next(os.walk(self.starting_dir))
+        try:
+            _start_dir, directories, file_names = next(os.walk(self.starting_dir))
+        except StopIteration:
+            raise Exception(f'Directory "{self.starting_dir}" not found.') from None
         print(directories)
         print(file_names)
         for file_name in file_names:
