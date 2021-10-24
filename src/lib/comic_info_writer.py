@@ -12,7 +12,8 @@ class ComicInfoWriter:
         root = elementTree.Element("ComicInfo")
         elementTree.SubElement(root, "Title").text = self.comic.title
         elementTree.SubElement(root, "Series").text = self.comic.series
-        elementTree.SubElement(root, "Volume").text = self.comic.volume
+        if self.comic.volume is not None:
+            elementTree.SubElement(root, "Volume").text = self.comic.volume
         elementTree.SubElement(root, "Manga").text = self.manga_field_value()
         return write_xml(xml_element=root, directory_path=self.directory_path)
 

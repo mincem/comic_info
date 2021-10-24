@@ -11,7 +11,7 @@ class Comic:
 
     @staticmethod
     def from_file_name(file_name, is_manga=False):
-        pattern = re.compile(r"^(?P<series>.*?) v(?P<volume>[0-9]+) \[(?P<title>.*?)]\.zip$")
+        pattern = re.compile(r"^(?P<series>.*?)(?: v(?P<volume>[0-9]+))? \[(?P<title>.*?)]\.zip$")
         match = re.match(pattern, file_name)
         if match is None:
             return
