@@ -19,8 +19,6 @@ class Command:
             _start_dir, directories, file_names = next(os.walk(self.starting_dir))
         except StopIteration:
             raise Exception(f'Directory "{self.starting_dir}" not found.') from None
-        print(directories)
-        print(file_names)
         for file_name in file_names:
             self.process_file(file_name)
 
@@ -34,7 +32,6 @@ class Command:
             return
         comic.print()
         file_path = os.path.join(self.starting_dir, file_name)
-        print(f"File path: {file_path}")
         comic_info_file_path = ComicInfoWriter(comic, self.starting_dir).write()
         self.add_file_to_zip(file_path, comic_info_file_path)
         os.remove(comic_info_file_path)
