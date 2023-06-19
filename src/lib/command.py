@@ -2,8 +2,8 @@ import os
 
 from .comic import Comic
 from .comic_info_writer import ComicInfoWriter
-from .zip_writer import ZipWriter
 from .command_line_zip_writer import CommandLineZipWriter
+from .zip_writer import ZipWriter
 
 
 def running_on_windows():
@@ -11,8 +11,9 @@ def running_on_windows():
 
 
 class Command:
-    def __init__(self, starting_dir):
+    def __init__(self, starting_dir, is_manga = False):
         self.starting_dir = starting_dir
+        self.is_manga = is_manga
 
     def execute(self):
         try:
@@ -27,7 +28,7 @@ class Command:
             return
         print()
         print(f"File: {file_name}")
-        comic = Comic.from_file_name(file_name)
+        comic = Comic.from_file_name(file_name, is_manga=self.is_manga)
         if comic is None:
             return
         comic.print()
