@@ -1,0 +1,10 @@
+[MASTER]
+disable=
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    broad-exception-raised,
+    relative-beyond-top-level,
+
+[FORMAT]
+max-line-length=120
