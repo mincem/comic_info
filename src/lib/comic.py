@@ -3,11 +3,12 @@ import textwrap
 
 
 class Comic:
-    def __init__(self, title, series, volume, is_manga):
+    def __init__(self, title, series, volume, is_manga, file_name=None):
         self.title = title
         self.series = series
         self.volume = volume
         self.is_manga = is_manga
+        self.file_name = file_name
 
     @staticmethod
     def from_file_name(file_name, is_manga=False):
@@ -19,7 +20,8 @@ class Comic:
             series=match.group("series"),
             volume=match.group("volume"),
             title=match.group("title"),
-            is_manga=is_manga
+            is_manga=is_manga,
+            file_name=file_name,
         )
 
     def print(self):

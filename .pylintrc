@@ -5,6 +5,7 @@ disable=
     missing-function-docstring,
     broad-exception-raised,
     relative-beyond-top-level,
+    too-many-arguments,
 
 [FORMAT]
 max-line-length=120
