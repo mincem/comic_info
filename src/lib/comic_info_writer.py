@@ -1,4 +1,4 @@
-import xml.etree.cElementTree as elementTree
+import xml.etree.ElementTree as elementTree
 
 from .xml_writer import write_xml
 
@@ -14,6 +14,8 @@ class ComicInfoWriter:
         elementTree.SubElement(root, "Series").text = self.comic.series
         if self.comic.volume is not None:
             elementTree.SubElement(root, "Volume").text = self.comic.volume
+        if self.comic.number is not None:
+            elementTree.SubElement(root, "Number").text = str(self.comic.number)
         elementTree.SubElement(root, "Manga").text = self.manga_field_value()
         return write_xml(xml_element=root, directory_path=self.directory_path)
 

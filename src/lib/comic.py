@@ -3,22 +3,26 @@ import textwrap
 
 
 class Comic:
-    def __init__(self, title, series, volume, is_manga, file_name=None):
+    def __init__(self, title, series, volume, number, is_manga, file_name=None):
         self.title = title
         self.series = series
         self.volume = volume
+        self.number = number
         self.is_manga = is_manga
         self.file_name = file_name
 
     @staticmethod
     def from_file_name(file_name, is_manga=False):
-        pattern = re.compile(r"^(?P<series>.*?)(?: v(?P<volume>[0-9]+))?(?: \[(?P<title>.*?)])?\.zip$")
+        pattern = re.compile(
+            r"^(?P<series>.*?)(?: v(?P<volume>[0-9]+)| #(?P<number>[0-9]+))?(?: \[(?P<title>.*?)])?\.zip$"
+        )
         match = re.match(pattern, file_name)
         if match is None:
             return None
         return Comic(
             series=match.group("series"),
             volume=match.group("volume"),
+            number=match.group("number"),
             title=match.group("title"),
             is_manga=is_manga,
             file_name=file_name,
@@ -30,6 +34,7 @@ class Comic:
             ----- Comic -----
               Series: {self.series}
               Volume: {self.volume}
+              Number: {self.number}
               Title: {self.title}
               Manga: {"Yes" if self.is_manga else "No"}
             -----------------\
