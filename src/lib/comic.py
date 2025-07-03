@@ -1,25 +1,26 @@
 import re
 import textwrap
+from dataclasses import dataclass
 
 
+@dataclass
 class Comic:
-    def __init__(self, title, series, volume, number, is_manga, file_name=None):
-        self.title = title
-        self.series = series
-        self.volume = volume
-        self.number = number
-        self.is_manga = is_manga
-        self.file_name = file_name
+    series: str
+    title: str = None
+    volume: str = None #TODO: Integers
+    number: str = None
+    is_manga: bool = False
+    file_name: str = None
 
-    @staticmethod
-    def from_file_name(file_name, is_manga=False):
+    @classmethod
+    def from_file_name(cls, file_name, is_manga=False):
         pattern = re.compile(
             r"^(?P<series>.*?)(?: v(?P<volume>[0-9]+)| #(?P<number>[0-9]+))?(?: \[(?P<title>.*?)])?\.zip$"
         )
         match = re.match(pattern, file_name)
         if match is None:
             return None
-        return Comic(
+        return cls(
             series=match.group("series"),
             volume=match.group("volume"),
             number=match.group("number"),
