@@ -7,8 +7,8 @@ from dataclasses import dataclass
 class Comic:
     series: str
     title: str = None
-    volume: str = None #TODO: Integers
-    number: str = None
+    volume: int = None
+    number: int = None
     is_manga: bool = False
     file_name: str = None
 
@@ -20,10 +20,12 @@ class Comic:
         match = re.match(pattern, file_name)
         if match is None:
             return None
+        volume = match.group("volume")
+        number = match.group("number")
         return cls(
             series=match.group("series"),
-            volume=match.group("volume"),
-            number=match.group("number"),
+            volume=int(volume) if volume is not None else None,
+            number=int(number) if number is not None else None,
             title=match.group("title"),
             is_manga=is_manga,
             file_name=file_name,

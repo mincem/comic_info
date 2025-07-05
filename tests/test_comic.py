@@ -11,7 +11,7 @@ def test_from_file_name_basic():
     comic = Comic.from_file_name(file_name)
     assert comic is not None
     assert comic.series == "Some Series"
-    assert comic.volume == "01"
+    assert comic.volume == 1
     assert comic.number is None
     assert comic.title == "Some Book"
     assert comic.is_manga is False
@@ -21,7 +21,7 @@ def test_from_file_name_basic():
 def test_from_file_name_no_title():
     comic = Comic.from_file_name("Some Series v3.zip")
     assert comic.series == "Some Series"
-    assert comic.volume == "3"
+    assert comic.volume == 3
     assert comic.title is None
 
 
@@ -33,7 +33,7 @@ def test_from_file_name_series_only():
 
 def test_from_file_name_with_number():
     comic = Comic.from_file_name("Some Series #88 [Some Book].zip")
-    assert comic.number == "88"
+    assert comic.number == 88
     assert comic.volume is None
 
 
