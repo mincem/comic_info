@@ -13,10 +13,13 @@ class ComicInfoWriter:
         elementTree.SubElement(root, "Title").text = self.comic.title
         elementTree.SubElement(root, "Series").text = self.comic.series
         if self.comic.volume is not None:
-            elementTree.SubElement(root, "Volume").text = self.comic.volume
+            elementTree.SubElement(root, "Volume").text = str(self.comic.volume)
         if self.comic.number is not None:
             elementTree.SubElement(root, "Number").text = str(self.comic.number)
+        if self.comic.publisher is not None:
+            elementTree.SubElement(root, "Publisher").text = self.comic.publisher
         elementTree.SubElement(root, "Manga").text = self.manga_field_value()
+
         return write_xml(xml_element=root, directory_path=self.directory_path)
 
     def manga_field_value(self):

@@ -13,9 +13,10 @@ def running_on_windows():
 
 
 class Command:
-    def __init__(self, starting_dir, is_manga = False):
+    def __init__(self, starting_dir, is_manga=False, **custom_fields):
         self.starting_dir = starting_dir
         self.is_manga = is_manga
+        self.custom_fields = custom_fields
 
     def execute(self):
         try:
@@ -24,7 +25,7 @@ class Command:
             raise Exception(f'Directory "{self.starting_dir}" not found.') from None
         for file_name in file_names:
             if file_name.endswith(".zip"):
-                comic = Comic.from_file_name(file_name, is_manga=self.is_manga)
+                comic = Comic.from_file_name(file_name, is_manga=self.is_manga, **self.custom_fields)
                 if comic:
                     self.process_comic(comic, self.starting_dir)
                     self.move_to_subfolder(comic, self.starting_dir)
@@ -33,7 +34,7 @@ class Command:
             _, _, file_names = next(os.walk(subfolder_path))
             for file_name in file_names:
                 if file_name.endswith(".zip"):
-                    comic = Comic.from_file_name(file_name, is_manga=self.is_manga)
+                    comic = Comic.from_file_name(file_name, is_manga=self.is_manga, **self.custom_fields)
                     if comic:
                         self.process_comic(comic, subfolder_path)
 
