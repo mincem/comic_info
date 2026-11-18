@@ -3,6 +3,7 @@ import os
 from .comic import Comic
 from .comic_info_writer import ComicInfoWriter
 from .command_line_zip_writer import CommandLineZipWriter
+from .series_metadata import SeriesMetadata
 from .zip_writer import ZipWriter
 
 ONE_SHOTS_FOLDER = "!One-shots"
@@ -23,9 +24,10 @@ class Command:
             _start_dir, directories, file_names = next(os.walk(self.starting_dir))
         except StopIteration:
             raise Exception(f'Directory "{self.starting_dir}" not found.') from None
+        series_metadata = SeriesMetadata(self.starting_dir)
         for file_name in file_names:
             if file_name.endswith(".zip"):
-                comic = Comic.from_file_name(file_name, is_manga=self.is_manga, **self.custom_fields)
+                comic = self.build_comic(file_name, series_metadata)
                 if comic:
                     self.process_comic(comic, self.starting_dir)
                     self.move_to_subfolder(comic, self.starting_dir)
@@ -34,9 +36,17 @@ class Command:
             _, _, file_names = next(os.walk(subfolder_path))
             for file_name in file_names:
                 if file_name.endswith(".zip"):
-                    comic = Comic.from_file_name(file_name, is_manga=self.is_manga, **self.custom_fields)
+                    comic = self.build_comic(file_name, series_metadata)
                     if comic:
                         self.process_comic(comic, subfolder_path)
+
+    def build_comic(self, file_name, series_metadata: SeriesMetadata):
+        comic = Comic.from_file_name(file_name, is_manga=self.is_manga)
+        if comic:
+            # --field values win over the JSON ones
+            comic.set_fields(series_metadata.get(comic.series))
+            comic.set_fields(self.custom_fields)
+        return comic
 
     def process_comic(self, comic: Comic, directory):
         print()
