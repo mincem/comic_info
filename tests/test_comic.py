@@ -1,7 +1,10 @@
 import os
 import sys
 
+import pytest
+
 from src.lib.comic import Comic
+from src.lib.command import Command, ONE_SHOTS_FOLDER
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -45,3 +48,13 @@ def test_from_file_name_manga():
 def test_from_file_name_invalid():
     comic = Comic.from_file_name("invalid_filename.txt")
     assert comic is None
+
+
+@pytest.mark.parametrize("file_name, folder", [
+    ("Some Series v01.zip", "Some Series"),
+    ("Some Series #12.zip", "Some Series"),
+    ("Some Series [Some Book].zip", "Some Series"),
+    ("Some Book.zip", ONE_SHOTS_FOLDER),
+])
+def test_target_folder_name(file_name, folder):
+    assert Command.target_folder_name(Comic.from_file_name(file_name)) == folder

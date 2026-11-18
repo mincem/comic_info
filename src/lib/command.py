@@ -58,7 +58,7 @@ class Command:
         os.remove(comic_info_file_path)
 
     def move_to_subfolder(self, comic: Comic, directory):
-        target_folder_name = ONE_SHOTS_FOLDER if comic.volume is None and comic.title is None else comic.series
+        target_folder_name = self.target_folder_name(comic)
         target_folder_path = os.path.join(directory, target_folder_name)
 
         if not os.path.exists(target_folder_path):
@@ -69,6 +69,11 @@ class Command:
         target_path = os.path.join(target_folder_path, comic.file_name)
         os.rename(source_path, target_path)
         print(f"Moved '{comic.file_name}' to '{target_folder_name}/'")
+
+    @staticmethod
+    def target_folder_name(comic: Comic) -> str:
+        is_one_shot = comic.volume is None and comic.number is None and comic.title is None
+        return ONE_SHOTS_FOLDER if is_one_shot else comic.series
 
     @staticmethod
     def add_file_to_zip(zip_file_path, comic_info_file_path):
